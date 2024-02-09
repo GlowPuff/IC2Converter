@@ -58,6 +58,7 @@
 			{
 				var me = new TranslatedMapEntity()
 				{
+					entityName = e.name,
 					GUID = e.GUID,
 					mainText = e.entityProperties.theText
 				};
@@ -71,7 +72,7 @@
 			//initial groups
 			foreach ( var item in mission.initialDeploymentGroups )
 			{
-				var dg = new TranslatedInitialGroup() { customInstructions = item.customText };
+				var dg = new TranslatedInitialGroup() { customInstructions = item.customText, cardName = item.cardName };
 				translatedMission.initialGroups.Add( dg );
 			}
 
@@ -102,11 +103,13 @@
 
 	public class TranslatedInitialGroup
 	{
+		public string cardName;
 		public string customInstructions;
 	}
 
 	public class TranslatedMapEntity
 	{
+		public string entityName;
 		public Guid GUID;
 		public string mainText;
 		public List<TranslatedGUIDText> buttonList = new();
