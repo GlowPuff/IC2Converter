@@ -4,6 +4,14 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }
+		string eaName { get; set; }
+	}
+
+	public class TranslatedEntityProperties
+	{
+		public Guid GUID;
+		public string theText = "";
+		public List<TranslatedGUIDText> buttonList = new();
 	}
 
 	/// <summary>
@@ -163,17 +171,13 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }// { get => EventActionType.M2; }
-		public List<TranslatedEntityProperties> translatedEntityProperties = new();
+		public string eaName { get; set; }
 
-		public class TranslatedEntityProperties
-		{
-			public Guid GUID;
-			public string theText = "";
-			public List<TranslatedGUIDText> buttonList = new();
-		}
+		public List<TranslatedEntityProperties> translatedEntityProperties = new();
 
 		public TranslatedModifyMapEntity( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			foreach ( var item in ((ModifyMapEntity)ea).entitiesToModify )
@@ -194,12 +198,14 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }//{ get => EventActionType.D1; }
+		public string eaName { get; set; }
 
 		//customText in the JSON is "custom instruction" in the model
 		public string enemyName, customText, modification, repositionInstructions;
 
 		public TranslatedEnemyDeployment( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			enemyName = ((EnemyDeployment)ea).enemyName;
@@ -213,12 +219,14 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }//{ get => EventActionType.G9; }
+		public string eaName { get; set; }
 
 		public string mainText, failText;
 		public List<TranslatedGUIDText> inputList = new();
 
 		public TranslatedInputPrompt( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			mainText = ((InputPrompt)ea).theText;
@@ -234,11 +242,13 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }
+		public string eaName { get; set; }
 
 		public string tbText;
 
 		public TranslatedTextBox( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			tbText = ((ShowTextBox)ea).theText;
@@ -249,11 +259,13 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }
+		public string eaName { get; set; }
 
 		public string theText;
 
 		public TranslatedChangeMissionInfo( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			theText = ((ChangeMissionInfo)ea).theText;
@@ -264,11 +276,13 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }
+		public string eaName { get; set; }
 
 		public string shortText, longText;
 
 		public TranslatedChangeObjective( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			shortText = ((ChangeObjective)ea).theText;
@@ -280,12 +294,14 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }
+		public string eaName { get; set; }
 
 		public string mainText;
 		public List<TranslatedGUIDText> buttonList = new();
 
 		public TranslatedQuestionPrompt( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			mainText = ((QuestionPrompt)ea).theText;
@@ -300,11 +316,13 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }
+		public string eaName { get; set; }
 
 		public string customName;
 
 		public TranslatedAllyDeployment( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			customName = ((AllyDeployment)ea).allyName;
@@ -316,11 +334,13 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }
+		public string eaName { get; set; }
 
 		public string newInstructions;
 
 		public TranslatedChangeGroupInstructions( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			newInstructions = ((ChangeInstructions)ea).theText;
@@ -331,11 +351,13 @@
 	{
 		public Guid GUID { get; set; }
 		public EventActionType eventActionType { get; set; }
+		public string eaName { get; set; }
 
 		public string repositionText;
 
 		public TranslatedChangeRepositionInstructions( IEventAction ea )
 		{
+			eaName = ea.displayName;
 			GUID = ea.GUID;
 			eventActionType = ea.eventActionType;
 			repositionText = ((ChangeReposition)ea).theText;

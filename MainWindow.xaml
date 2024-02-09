@@ -18,6 +18,7 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<local:InvertBoolConverter x:Key="invert" />
+			<BooleanToVisibilityConverter x:Key="boolvis" />
 
 			<DataTemplate x:Key="LVitemTemplate">
 				<Grid Margin="5">
@@ -148,6 +149,8 @@
 		</Grid>
 
 		<!--  row 3  -->
+		<!--  Style="{StaticResource LV}"  -->
+		<!--  IsEnabled="{Binding isBusy, Converter={StaticResource invert}}"  -->
 		<ListView
 			x:Name="sourceLV"
 			Grid.Row="3"
@@ -156,10 +159,14 @@
 			HorizontalContentAlignment="Stretch"
 			d:ItemsSource="{d:SampleData ItemCount=5}"
 			Background="Transparent"
-			IsEnabled="{Binding isBusy, Converter={StaticResource invert}}"
 			ItemTemplate="{StaticResource LVitemTemplate}"
-			ItemsSource="{Binding sourceListItems}"
-			Style="{StaticResource LV}" />
+			ItemsSource="{Binding sourceListItems}" />
+
+		<Border
+			Grid.Row="3"
+			Background="#1a1a1a"
+			Opacity=".75"
+			Visibility="{Binding isBusy, Converter={StaticResource boolvis}}" />
 
 		<!--  row 4  -->
 		<StackPanel x:Name="missionContainer" Grid.Row="4">

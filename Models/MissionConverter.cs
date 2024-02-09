@@ -50,6 +50,7 @@ namespace IC2_Mass_Mission_Converter
 		{
 			isBusy = true;
 			cancellationToken = new();
+			bool errorThrown = false;
 
 			try
 			{
@@ -62,14 +63,21 @@ namespace IC2_Mass_Mission_Converter
 					{
 						cancellationToken.Token.ThrowIfCancellationRequested();
 						//Utils.Log( "working..." );
+						if ( errorThrown )
+							break;
 
 						progressText = $"Processing {count++} of {max}...";
 						//load the mission to add any missing properties in the newer format
 						var m = FileManager.LoadMission( missionFileName );
 
 						//save the Mission and translation
-						if ( !FileManager.Save( m, missionFileName, destinationFolder, onlyExtract ) )
+						if ( m == null || !FileManager.Save( m, missionFileName, destinationFolder, onlyExtract ) )
+						{
+							progressText = "Error!";
+							errorThrown = true;
+							cancellationToken.Cancel();
 							Utils.Log( $"Error saving Translation!" );
+						}
 					}
 				}, cancellationToken.Token );
 
@@ -81,7 +89,12 @@ namespace IC2_Mass_Mission_Converter
 			}
 			catch ( Exception )
 			{
+				progressText = "Error!";
+				isBusy = false;
+				errorThrown = true;
+				cancellationToken.Cancel();
 				Utils.Log( "CANCELED" );
+				callBack.Invoke();
 			}
 		}
 

@@ -123,7 +123,7 @@ namespace Imperial_Commander_Editor
 			}
 			catch ( Exception e )
 			{
-				MessageBox.Show( "Could not load the Mission.\r\n\r\nException:\r\n" + e.Message, "App Exception", MessageBoxButton.OK, MessageBoxImage.Error );
+				MessageBox.Show( $"Could not load the Mission.\r\n{filename}\r\nException:\r\n" + e.Message, "App Exception", MessageBoxButton.OK, MessageBoxImage.Error );
 				return null;
 			}
 		}
