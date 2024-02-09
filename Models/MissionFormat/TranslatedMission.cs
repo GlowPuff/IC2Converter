@@ -106,6 +106,7 @@
 
 	public class TranslatedEvent
 	{
+		public string eventName;
 		public Guid GUID;
 		public string eventText;
 		public List<ITranslatedEventAction> eventActions;
@@ -114,6 +115,7 @@
 
 		public TranslatedEvent( MissionEvent ev )
 		{
+			eventName = ev.name;
 			GUID = ev.GUID;
 			eventText = ev.eventText;
 			eventActions = new();
