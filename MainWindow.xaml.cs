@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using Imperial_Commander_Editor;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -82,6 +83,35 @@ namespace IC2_Mass_Mission_Converter
 		private void clearListBtn_Click( object sender, RoutedEventArgs e )
 		{
 			missionConverter.ClearList();
+		}
+
+		private void dropContainer_Drop( object sender, DragEventArgs e )
+		{
+			if ( e.Data.GetDataPresent( DataFormats.FileDrop ) )
+			{
+				//grab the filenames
+				string[] filename = e.Data.GetData( DataFormats.FileDrop ) as string[];
+				foreach ( var file in filename )
+				{
+					if ( Path.GetExtension( file ) == ".json" )
+					{
+						missionConverter.AddMission( file );
+					}
+				}
+
+				if ( missionConverter.sourceListItems.Count > 0 )
+					doConvert.IsEnabled = true;
+			}
+		}
+
+		private void dropContainer_DragEnter( object sender, DragEventArgs e )
+		{
+			if ( e.Data.GetDataPresent( DataFormats.FileDrop ) )
+			{
+				string[] filename = e.Data.GetData( DataFormats.FileDrop ) as string[];
+				if ( Path.GetExtension( filename[0] ) == ".json" )
+					e.Effects = DragDropEffects.All;
+			}
 		}
 	}
 }

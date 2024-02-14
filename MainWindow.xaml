@@ -106,6 +106,13 @@
 						FontWeight="Bold"
 						Foreground="White"
 						Text="{Binding destinationFolder}" />
+
+					<TextBlock
+						Margin="0,5,0,0"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Foreground="White"
+						Text="Files can also be drag and dropped into the view below." />
 				</StackPanel>
 
 				<Button
@@ -158,7 +165,10 @@
 			Margin="10"
 			HorizontalContentAlignment="Stretch"
 			d:ItemsSource="{d:SampleData ItemCount=5}"
+			AllowDrop="True"
 			Background="Transparent"
+			DragEnter="dropContainer_DragEnter"
+			Drop="dropContainer_Drop"
 			ItemTemplate="{StaticResource LVitemTemplate}"
 			ItemsSource="{Binding sourceListItems}" />
 
