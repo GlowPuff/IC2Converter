@@ -9,6 +9,7 @@
 
 	public class TranslatedEntityProperties
 	{
+		public string entityName;
 		public Guid GUID;
 		public string theText = "";
 		public List<TranslatedGUIDText> buttonList = new();
@@ -186,6 +187,7 @@
 			foreach ( var item in ((ModifyMapEntity)ea).entitiesToModify )
 			{
 				var tep = new TranslatedEntityProperties();
+				tep.entityName = item.entityProperties.name;
 				tep.GUID = item.GUID;
 				tep.theText = item.entityProperties.theText;
 				foreach ( var btn in item.entityProperties.buttonActions )
