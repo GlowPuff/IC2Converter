@@ -28,22 +28,28 @@ namespace IC2_Mass_Mission_Converter
 			isBusy = false;
 			onlyExtract = false;
 			sourceListItems = new();
-			progressText = "Waiting for work.";
+			progressText = "Waiting for work";
 		}
 
 		public void RemoveMission( string m )
 		{
 			sourceListItems.Remove( m );
+			if ( sourceListItems.Count > 0 )
+				progressText = $"Waiting for work ({sourceListItems.Count} items added)";
+			else
+				progressText = "Waiting for work";
 		}
 
 		public void AddMission( string m )
 		{
 			sourceListItems.Add( m );
+			progressText = $"Waiting for work ({sourceListItems.Count} items added)";
 		}
 
 		public void ClearList()
 		{
 			sourceListItems.Clear();
+			progressText = "Waiting for work";
 		}
 
 		public async void DoTranslationWork( Action callBack )

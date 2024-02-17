@@ -7,7 +7,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	Title="IC2 Mission Converter / Text Extractor"
 	Width="750"
-	Height="600"
+	Height="550"
 	Background="#FF23252D"
 	ResizeMode="CanResizeWithGrip"
 	WindowStartupLocation="CenterScreen"
@@ -161,7 +161,6 @@
 		<ListView
 			x:Name="sourceLV"
 			Grid.Row="3"
-			MinHeight="200"
 			Margin="10"
 			HorizontalContentAlignment="Stretch"
 			d:ItemsSource="{d:SampleData ItemCount=5}"
