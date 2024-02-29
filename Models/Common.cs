@@ -1,4 +1,9 @@
-﻿namespace Imperial_Commander_Editor
+﻿namespace IC2_Mass_Mission_Converter
+{
+	public enum ConvertType { Convert, Extract, Both }
+}
+
+namespace Imperial_Commander_Editor
 {
 	///enums
 	public enum CustomInstructionType { Top, Bottom, Replace }

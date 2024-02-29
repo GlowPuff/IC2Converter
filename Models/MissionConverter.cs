@@ -10,13 +10,14 @@ namespace IC2_Mass_Mission_Converter
 		CancellationTokenSource cancellationToken;
 
 		string _destinationFolder, _progressText;
-		bool _isBusy, _onlyExtract;
+		bool _isBusy;
+		ConvertType _convertType;
 
 		public ObservableCollection<string> sourceListItems { get; set; }
 		public string destinationFolder { get => _destinationFolder; set => SetProperty( ref _destinationFolder, value ); }
 		public string progressText { get => _progressText; set => SetProperty( ref _progressText, value ); }
 		public bool isBusy { get => _isBusy; set => SetProperty( ref _isBusy, value ); }
-		public bool onlyExtract { get => _onlyExtract; set => SetProperty( ref _onlyExtract, value ); }
+		public ConvertType convertType { get => _convertType; set => SetProperty( ref _convertType, value ); }
 
 		public MissionConverter()
 		{
@@ -26,9 +27,9 @@ namespace IC2_Mass_Mission_Converter
 				Directory.CreateDirectory( destinationFolder );
 
 			isBusy = false;
-			onlyExtract = false;
 			sourceListItems = new();
 			progressText = "Waiting for work";
+			convertType = ConvertType.Both;
 		}
 
 		public void RemoveMission( string m )
@@ -60,7 +61,7 @@ namespace IC2_Mass_Mission_Converter
 
 			try
 			{
-				await Task.Run( async () =>
+				await Task.Run( () =>
 				{
 					int count = 1;
 					int max = sourceListItems.Count;
@@ -77,7 +78,7 @@ namespace IC2_Mass_Mission_Converter
 						var m = FileManager.LoadMission( missionFileName );
 
 						//save the Mission and translation
-						if ( m == null || !FileManager.Save( m, missionFileName, destinationFolder, onlyExtract ) )
+						if ( m == null || !FileManager.Save( m, missionFileName, destinationFolder, convertType ) )
 						{
 							progressText = "Error!";
 							errorThrown = true;

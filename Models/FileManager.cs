@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 using System.Windows;
+using IC2_Mass_Mission_Converter;
 using Newtonsoft.Json;
 
 namespace Imperial_Commander_Editor
@@ -36,7 +37,7 @@ namespace Imperial_Commander_Editor
 		/// <param name="sourcePath">Full path to Mission (path+filename+ext)</param>
 		/// <param name="basePath">Full destination folder path</param>
 		/// <returns></returns>
-		public static bool Save( Mission mission, string sourcePath, string baseOutputFolder, bool onlyExtract )
+		public static bool Save( Mission mission, string sourcePath, string baseOutputFolder, ConvertType convertType )
 		{
 			FileInfo fi = new( sourcePath );
 			mission.fileName = fi.Name;
@@ -50,7 +51,7 @@ namespace Imperial_Commander_Editor
 
 			string output = JsonConvert.SerializeObject( mission, Formatting.Indented );
 			//save the Mission
-			if ( !onlyExtract )
+			if ( convertType == ConvertType.Both || convertType == ConvertType.Convert )
 			{
 				try
 				{
@@ -67,26 +68,30 @@ namespace Imperial_Commander_Editor
 			}
 
 			//now save the translation
-			try
+			if ( convertType == ConvertType.Both || convertType == ConvertType.Extract )
 			{
-				//strip default language out of the Mission and save it
-				TranslatedMission translation = TranslatedMission.CreateTranslation( mission );
-				var langID = mission.languageID.Split( '(', ')' )[1];
-				string tfname = $"{mission.fileName.Substring( 0, mission.fileName.Length - 5 )}_{langID}.json";
-				//$"{mission.fullPathToFile.Substring( 0, mission.fullPathToFile.Length - 5 )}_{lang}.json";
-				//serialize to json
-				output = JsonConvert.SerializeObject( translation, Formatting.Indented );
-				//save it
-				using ( var stream = File.CreateText( Path.Combine( baseOutputFolder, tfname ) ) )
+				try
 				{
-					stream.Write( output );
+					//strip default language out of the Mission and save it
+					TranslatedMission translation = TranslatedMission.CreateTranslation( mission );
+					var langID = mission.languageID.Split( '(', ')' )[1];
+					string tfname = $"{mission.fileName.Substring( 0, mission.fileName.Length - 5 )}_{langID}.json";
+					//$"{mission.fullPathToFile.Substring( 0, mission.fullPathToFile.Length - 5 )}_{lang}.json";
+					//serialize to json
+					output = JsonConvert.SerializeObject( translation, Formatting.Indented );
+					//save it
+					using ( var stream = File.CreateText( Path.Combine( baseOutputFolder, tfname ) ) )
+					{
+						stream.Write( output );
+					}
+				}
+				catch ( Exception e )
+				{
+					MessageBox.Show( "Could not save the Mission's translation.\r\n\r\nException:\r\n" + e.Message, "App Exception", MessageBoxButton.OK, MessageBoxImage.Error );
+					return false;
 				}
 			}
-			catch ( Exception e )
-			{
-				MessageBox.Show( "Could not save the Mission's translation.\r\n\r\nException:\r\n" + e.Message, "App Exception", MessageBoxButton.OK, MessageBoxImage.Error );
-				return false;
-			}
+
 			return true;
 		}
 
