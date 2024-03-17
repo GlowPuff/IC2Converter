@@ -124,6 +124,34 @@ namespace Imperial_Commander_Editor
 				m.fullPathToFile = fi.FullName;
 				m.fileVersion = Utils.formatVersion;
 
+				//convert all local triggers/events to global versions
+				int eCount = 0;
+				int tCount = 0;
+				foreach ( MapSection item in m.mapSections )
+				{
+					foreach ( var evnt in item.missionEvents )
+					{
+						if ( evnt.GUID != Guid.Empty )
+						{
+							m.globalEvents.Add( evnt );
+							eCount++;
+						}
+					}
+					foreach ( var trig in item.triggers )
+					{
+						if ( trig.GUID != Guid.Empty )
+						{
+							m.globalTriggers.Add( trig );
+							tCount++;
+						}
+					}
+					//clear them so they aren't used
+					item.missionEvents.Clear();
+					item.triggers.Clear();
+				}
+
+				Utils.Log( $"LoadMission()::Converted [{eCount}] LOCAL Events and [{tCount}] LOCAL Triggers to GLOBAL in {fi.Name}" );
+
 				return m;
 			}
 			catch ( Exception e )
@@ -131,92 +159,6 @@ namespace Imperial_Commander_Editor
 				MessageBox.Show( $"Could not load the Mission.\r\n{filename}\r\nException:\r\n" + e.Message, "App Exception", MessageBoxButton.OK, MessageBoxImage.Error );
 				return null;
 			}
-		}
-
-		public static Mission LoadMissionFromString( string json )
-		{
-			//make sure it's a mission, simple check for a property in the text
-			if ( !json.Contains( "missionGUID" ) )
-				return null;
-
-			try
-			{
-				var m = JsonConvert.DeserializeObject<Mission>( json );
-				//Utils.Log( "LoadMissionFromString: " + m.missionProperties.missionID );
-				return m;
-			}
-			catch ( Exception e )
-			{
-				MessageBox.Show( "LoadMissionFromString()::Could not load the Mission.\n\nException:\n" + e.Message, "App Exception", MessageBoxButton.OK, MessageBoxImage.Error );
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// "filename" is a full path, returns null on failure
-		/// </summary>
-		public static ProjectItem CreateProjectItem( string filename )
-		{
-			ProjectItem projectItem = new ProjectItem();
-
-			if ( !File.Exists( filename ) )
-				return null;
-
-			var mission = LoadMissionFromString( File.ReadAllText( filename ) );
-			if ( mission != null )
-			{
-				projectItem.fullPathWithFilename = filename;
-				projectItem.fileName = new FileInfo( filename ).Name;
-				projectItem.Title = mission.missionProperties.missionName;
-				projectItem.Date = mission.saveDate;
-				projectItem.fileVersion = mission.fileVersion;
-				projectItem.timeTicks = mission.timeTicks;
-				projectItem.Description = mission.missionProperties.missionDescription;
-			}
-			else
-				return null;
-
-			return projectItem;
-
-			//ProjectItem projectItem = new();
-			//FileInfo fi = new FileInfo( filename );
-			//string basePath = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ), "ImperialCommander" );
-
-			//string[] text = File.ReadAllLines( filename );
-			//foreach ( var line in text )
-			//{
-			//	//manually parse each line
-			//	string[] split = line.Split( ':' );
-			//	if ( split.Length == 2 )
-			//	{
-			//		projectItem.fileName = fi.Name;
-			//		projectItem.relativePath = Path.GetRelativePath( basePath, new DirectoryInfo( filename ).FullName );
-
-			//		split[0] = split[0].Replace( "\"", "" ).Replace( ",", "" ).Trim();
-			//		split[1] = split[1].Replace( "\"", "" ).Replace( ",", "" ).Trim();
-			//		if ( split[0] == "missionName" )
-			//			projectItem.Title = split[1];
-			//		if ( split[0] == "saveDate" )
-			//			projectItem.Date = split[1];
-			//		if ( split[0] == "fileVersion" )
-			//			projectItem.fileVersion = split[1];
-			//		if ( split[0] == "timeTicks" )
-			//			projectItem.timeTicks = long.Parse( split[1] );
-			//	}
-			//	else if ( split.Length > 2 )//mission name with a colon
-			//	{
-			//		for ( int i = 0; i < split.Length; i++ )
-			//			split[i] = split[i].Replace( "\"", "" ).Replace( ",", "" ).Trim();
-			//		if ( split[0] == "missionName" )
-			//		{
-			//			int idx = line.IndexOf( ':' );
-			//			int c = line.LastIndexOf( ',' );
-			//			string mname = line.Substring( idx + 1, c - idx - 1 ).Replace( "\"", "" ).Trim();
-			//			projectItem.Title = mname;
-			//		}
-			//	}
-			//}
-			//return projectItem;
 		}
 
 		/// <summary>
