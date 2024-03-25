@@ -74,8 +74,10 @@ namespace Imperial_Commander_Editor
 				{
 					//strip default language out of the Mission and save it
 					TranslatedMission translation = TranslatedMission.CreateTranslation( mission );
-					var langID = mission.languageID.Split( '(', ')' )[1];
-					string tfname = $"{mission.fileName.Substring( 0, mission.fileName.Length - 5 )}_{langID}.json";
+					string[] langID = ["", "XX"];
+					if ( mission.languageID.Contains( "(" ) && mission.languageID.Contains( ")" ) )
+						langID = mission.languageID.Split( '(', ')' );
+					string tfname = $"{mission.fileName.Substring( 0, mission.fileName.Length - 5 )}_{langID[1]}.json";
 					//$"{mission.fullPathToFile.Substring( 0, mission.fullPathToFile.Length - 5 )}_{lang}.json";
 					//serialize to json
 					output = JsonConvert.SerializeObject( translation, Formatting.Indented );
