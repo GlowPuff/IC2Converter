@@ -171,10 +171,10 @@
 	}
 
 	#region event action models
-	public class TranslatedModifyMapEntity : ITranslatedEventAction
+	public class TranslatedModifyMapEntity : ITranslatedEventAction//M2
 	{
 		public Guid GUID { get; set; }
-		public EventActionType eventActionType { get; set; }// { get => EventActionType.M2; }
+		public EventActionType eventActionType { get; set; }
 		public string eaName { get; set; }
 
 		public List<TranslatedEntityProperties> translatedEntityProperties = new();
@@ -199,10 +199,10 @@
 		}
 	}
 
-	public class TranslatedEnemyDeployment : ITranslatedEventAction
+	public class TranslatedEnemyDeployment : ITranslatedEventAction//D1
 	{
 		public Guid GUID { get; set; }
-		public EventActionType eventActionType { get; set; }//{ get => EventActionType.D1; }
+		public EventActionType eventActionType { get; set; }
 		public string eaName { get; set; }
 
 		//customText in the JSON is "custom instruction" in the model
@@ -220,10 +220,10 @@
 		}
 	}
 
-	public class TranslatedInputPrompt : ITranslatedEventAction
+	public class TranslatedInputPrompt : ITranslatedEventAction//G9
 	{
 		public Guid GUID { get; set; }
-		public EventActionType eventActionType { get; set; }//{ get => EventActionType.G9; }
+		public EventActionType eventActionType { get; set; }
 		public string eaName { get; set; }
 
 		public string mainText, failText;
