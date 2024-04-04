@@ -9,6 +9,8 @@ namespace Imperial_Commander_Editor
 		public ObservableCollection<string> campaignRewards { get; set; }
 		public ObservableCollection<string> earnedVillains { get; set; }
 		public ObservableCollection<string> earnedAllies { get; set; }
+		public int medpacsToModify { get; set; }
+		public int threatToModify { get; set; }
 
 		public AddCampaignReward()
 		{
@@ -21,6 +23,8 @@ namespace Imperial_Commander_Editor
 			campaignRewards = new();
 			earnedVillains = new();
 			earnedAllies = new();
+			medpacsToModify = 0;
+			threatToModify = 0;
 		}
 	}
 }
