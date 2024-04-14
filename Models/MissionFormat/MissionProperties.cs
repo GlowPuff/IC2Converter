@@ -9,14 +9,12 @@ namespace Imperial_Commander_Editor
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		string _missionName, _missionID, _fixedAlly, _bannedAlly, _missionInfo, _specificAlly, _specificHero, _priorityOther, _missionDescription, _campaignName, _startingObjective, _additionalMissionInfo, _customMissionIdentifier;
-		bool _optionalDeployment, _factionImperial, _factionMercenary;
+		bool _optionalDeployment, _factionImperial, _factionMercenary, _useAlternateEventSystem;
 		int _roundLimit;
-		YesNoAll _useFixedAlly, _useBannedAlly;//, _banAllAllies;
+		YesNoAll _useFixedAlly, _useBannedAlly;
 		CustomInstructionType _customInstructionType;
-		//ThreatModifierType _initialThreatType;
 		PriorityTargetType _priorityTargetType;
 		Guid _startingEvent, _roundLimitEvent;
-		//int _initialThreatModifier, _initialThreatMultiplier;
 		MissionType _missionType;
 		ChangeReposition _changeRepositionOverride;
 		ObservableCollection<MissionSubType> _missionSubType;
@@ -92,22 +90,25 @@ namespace Imperial_Commander_Editor
 			get { return _factionMercenary; }
 			set { _factionMercenary = value; PC(); }
 		}
+
+		public bool useAlternateEventSystem
+		{
+			get { return _useAlternateEventSystem; }
+			set { _useAlternateEventSystem = value; PC(); }
+		}
+
 		public int roundLimit
 		{
 			get { return _roundLimit; }
 			set { _roundLimit = value; PC(); }
 		}
-		//public YesNoAll banAllAllies
-		//{
-		//	get { return _banAllAllies; }
-		//	set { _banAllAllies = value; PC(); }
-		//}
 
 		public YesNoAll useFixedAlly
 		{
 			get { return _useFixedAlly; }
 			set { _useFixedAlly = value; PC(); }
 		}
+
 		public YesNoAll useBannedAlly
 		{
 			get { return _useBannedAlly; }
@@ -119,12 +120,6 @@ namespace Imperial_Commander_Editor
 			get { return _customInstructionType; }
 			set { _customInstructionType = value; PC(); }
 		}
-
-		//public ThreatModifierType initialThreatType
-		//{
-		//	get { return _initialThreatType; }
-		//	set { _initialThreatType = value; PC(); }
-		//}
 
 		public PriorityTargetType priorityTargetType
 		{
@@ -160,18 +155,6 @@ namespace Imperial_Commander_Editor
 			get { return _roundLimitEvent; }
 			set { _roundLimitEvent = value; PC(); }
 		}
-
-		//public int initialThreatModifier
-		//{
-		//	get { return _initialThreatModifier; }
-		//	set { _initialThreatModifier = value; PC(); }
-		//}
-
-		//public int initialThreatMultiplier
-		//{
-		//	get { return _initialThreatMultiplier; }
-		//	set { _initialThreatMultiplier = value; PC(); }
-		//}
 
 		public MissionType missionType { get { return _missionType; } set { _missionType = value; PC(); } }
 		public ChangeReposition changeRepositionOverride { get { return _changeRepositionOverride; } set { _changeRepositionOverride = value; PC(); } }
@@ -229,6 +212,7 @@ namespace Imperial_Commander_Editor
 			changeRepositionOverride = null;
 			missionSubType = new();
 			_multipleBannedAllies = new();
+			useAlternateEventSystem = false;
 		}
 	}
 }
