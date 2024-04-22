@@ -73,6 +73,12 @@
 					TextWrapping="Wrap" />
 				<TextBlock
 					Padding="10,0,10,10"
+					FontStyle="Italic"
+					Foreground="White"
+					Text="The Language ID already set in the Mission will be used in the filename of the extracted Mission text."
+					TextWrapping="Wrap" />
+				<TextBlock
+					Padding="10,0,10,10"
 					FontWeight="Bold"
 					Foreground="White"
 					Text="The original files are NOT modified."
@@ -135,25 +141,29 @@
 			Grid.Row="2"
 			Margin="10,0"
 			Background="OliveDrab">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="auto" />
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
 
-			<TextBlock
-				Grid.Column="0"
-				Margin="10,10,0,10"
-				VerticalAlignment="Center"
-				Foreground="White"
-				Text="Language ID:" />
-			<TextBlock
-				Grid.Column="1"
-				Margin="10,10,10,10"
-				VerticalAlignment="Center"
-				FontStyle="Italic"
-				Foreground="White"
-				Text="The Language ID already set in the Mission will be used in the filename of the extracted Mission text."
-				TextWrapping="Wrap" />
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="1.75*" />
+				</Grid.ColumnDefinitions>
+				<CheckBox
+					x:Name="assignRandomGUIDCB"
+					Margin="0,0,0,0"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Content="Assign New 'missionGUID' Property"
+					Foreground="White"
+					IsChecked="False" />
+				<TextBlock
+					Grid.Column="1"
+					Margin="10"
+					VerticalAlignment="Center"
+					FontStyle="Italic"
+					Foreground="White"
+					Text="Checking this will assign a new GUID to the 'missionGUID' property of the Missions you Convert.  Use this option to repair Missions with an incorrect 'missionGUID' property.  Translations are not affected."
+					TextWrapping="Wrap" />
+			</Grid>
 		</Grid>
 
 		<!--  row 3  -->

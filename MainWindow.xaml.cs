@@ -49,7 +49,7 @@ namespace IC2_Mass_Mission_Converter
 			doConvert.Visibility = Visibility.Collapsed;
 			cancelConvert.Visibility = Visibility.Visible;
 
-			missionConverter.DoTranslationWork( () =>
+			missionConverter.DoTranslationWork( assignRandomGUIDCB.IsChecked.Value, () =>
 			{
 				doConvert.Visibility = Visibility.Visible;
 				cancelConvert.Visibility = Visibility.Collapsed;

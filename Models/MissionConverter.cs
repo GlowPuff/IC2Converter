@@ -53,7 +53,7 @@ namespace IC2_Mass_Mission_Converter
 			progressText = "Waiting for work";
 		}
 
-		public async void DoTranslationWork( Action callBack )
+		public async void DoTranslationWork( bool assignRandomGUID, Action callBack )
 		{
 			isBusy = true;
 			cancellationToken = new();
@@ -76,6 +76,12 @@ namespace IC2_Mass_Mission_Converter
 						progressText = $"Processing {count++} of {max}...";
 						//load the mission to add any missing properties in the newer format
 						var m = FileManager.LoadMission( missionFileName );
+						if ( m != null
+							&& assignRandomGUID
+							&& (convertType == ConvertType.Convert || convertType == ConvertType.Both) )
+						{
+							m.missionGUID = Guid.NewGuid();
+						}
 
 						//save the Mission and translation
 						if ( m == null || !FileManager.Save( m, missionFileName, destinationFolder, convertType ) )
@@ -92,6 +98,8 @@ namespace IC2_Mass_Mission_Converter
 				isBusy = false;
 				Utils.Log( "work done!" );
 				progressText = "Finished!";
+				if ( assignRandomGUID && (convertType == ConvertType.Convert || convertType == ConvertType.Both) )
+					progressText = "Finished!  A new 'missionGUID' property was also assigned.";
 				callBack.Invoke();
 			}
 			catch ( Exception )
