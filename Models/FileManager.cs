@@ -152,7 +152,8 @@ namespace Imperial_Commander_Editor
 					item.triggers.Clear();
 				}
 
-				Utils.Log( $"LoadMission()::Converted [{eCount}] LOCAL Events and [{tCount}] LOCAL Triggers to GLOBAL in {fi.Name}" );
+				if ( eCount > 0 || tCount > 0 )
+					Utils.Log( $"LoadMission()::Converted [{eCount}] LOCAL Events and [{tCount}] LOCAL Triggers to GLOBAL in {fi.Name}" );
 
 				return m;
 			}
