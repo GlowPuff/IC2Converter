@@ -1,9 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Newtonsoft.Json;
 
 namespace Imperial_Commander_Editor
 {
@@ -26,8 +23,6 @@ namespace Imperial_Commander_Editor
 		public EntityType entityType { get; set; }
 		public Vector entityPosition { get; set; }
 		public double entityRotation { get; set; }
-		[JsonIgnore]
-		public EntityRenderer mapRenderer { get; set; }
 		public EntityProperties entityProperties { get; set; }
 		public Guid mapSectionOwner { get { return _mapSectionOwner; } set { _mapSectionOwner = value; PC(); } }
 		public bool hasProperties { get { return true; } }
@@ -41,13 +36,6 @@ namespace Imperial_Commander_Editor
 			{
 				entityProperties.entityColor = value;
 				PC();
-				if ( mapRenderer != null )
-				{
-					Color c = Utils.ColorFromName( entityProperties.entityColor ).color;
-					mapRenderer.entityShape.Fill = new SolidColorBrush( c );
-					mapRenderer.unselectedBGColor = new SolidColorBrush( c );
-					mapRenderer.selectedBGColor = new SolidColorBrush( c );
-				}
 			}
 		}
 
@@ -89,23 +77,6 @@ namespace Imperial_Commander_Editor
 			return dupe;
 		}
 
-		public void BuildRenderer( Canvas canvas, Vector where, double scale )
-		{
-			Color c = Utils.ColorFromName( entityProperties.entityColor ).color;
-
-			mapRenderer = new( this, where, scale, new( 1, 1 ) )
-			{
-				unselectedBGColor = new SolidColorBrush( c ),
-				selectedBGColor = new SolidColorBrush( c ),
-				selectedImageZ = 305,
-				selectedZ = 300
-			};
-			mapRenderer.BuildShape( TokenShape.Square );
-			mapRenderer.BuildImage( "pack://application:,,,/Imperial Commander Editor;component/Assets/Tiles/crate.png" );
-			canvas.Children.Add( mapRenderer.entityImage );
-			canvas.Children.Add( mapRenderer.entityShape );
-		}
-
 		public bool Validate()
 		{
 			if ( !Utils.mainWindow.mission.EntityExists( GUID ) )
@@ -116,11 +87,6 @@ namespace Imperial_Commander_Editor
 				return false;
 			}
 			return true;
-		}
-
-		public void Dim( Guid guid )
-		{
-			mapRenderer.Dim( mapSectionOwner != guid );
 		}
 	}
 }

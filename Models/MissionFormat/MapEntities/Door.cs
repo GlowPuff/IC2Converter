@@ -1,9 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Newtonsoft.Json;
 
 namespace Imperial_Commander_Editor
 {
@@ -26,8 +23,6 @@ namespace Imperial_Commander_Editor
 		public EntityType entityType { get; set; }
 		public Vector entityPosition { get; set; }
 		public double entityRotation { get; set; }
-		[JsonIgnore]
-		public EntityRenderer mapRenderer { get; set; }
 		public EntityProperties entityProperties { get; set; }
 		public Guid mapSectionOwner { get { return _mapSectionOwner; } set { _mapSectionOwner = value; PC(); } }
 		public bool hasProperties { get { return true; } }
@@ -68,23 +63,6 @@ namespace Imperial_Commander_Editor
 			return dupe;
 		}
 
-		public void BuildRenderer( Canvas c, Vector where, double scale )
-		{
-			mapRenderer = new( this, where, scale, new( 2, 2 ) )
-			{
-				unselectedBGColor = new SolidColorBrush( Colors.Transparent ),
-				selectedBGColor = new SolidColorBrush( Colors.Transparent ),
-				unselectedStrokeColor = new SolidColorBrush( Colors.Transparent ),
-				selectedImageZ = 305,
-				selectedZ = 300,
-				unselectedStrokeWidth = .25f
-			};
-			mapRenderer.BuildShape( TokenShape.Square );
-			mapRenderer.BuildImage( "pack://application:,,,/Imperial Commander Editor;component/Assets/Tiles/door.png" );
-			c.Children.Add( mapRenderer.entityImage );
-			c.Children.Add( mapRenderer.entityShape );
-		}
-
 		public bool Validate()
 		{
 			if ( !Utils.mainWindow.mission.EntityExists( GUID ) )
@@ -96,11 +74,5 @@ namespace Imperial_Commander_Editor
 			}
 			return true;
 		}
-
-		public void Dim( Guid guid )
-		{
-			mapRenderer.Dim( mapSectionOwner != guid );
-		}
-
 	}
 }

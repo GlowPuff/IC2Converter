@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using Newtonsoft.Json;
 
 namespace Imperial_Commander_Editor
 {
@@ -27,8 +25,6 @@ namespace Imperial_Commander_Editor
 		public EntityType entityType { get; set; }
 		public Vector entityPosition { get; set; }
 		public double entityRotation { get; set; }
-		[JsonIgnore]
-		public EntityRenderer mapRenderer { get; set; }
 		public EntityProperties entityProperties { get; set; }
 		public Guid mapSectionOwner { get { return _mapSectionOwner; } set { _mapSectionOwner = value; PC(); } }
 		public bool hasProperties { get { return true; } }
@@ -42,13 +38,6 @@ namespace Imperial_Commander_Editor
 			{
 				entityProperties.entityColor = value;
 				PC();
-				if ( mapRenderer != null )
-				{
-					Color c = Utils.ColorFromName( entityProperties.entityColor ).color;
-					mapRenderer.entityShape.Fill = new SolidColorBrush( c );
-					mapRenderer.unselectedBGColor = new SolidColorBrush( c );
-					mapRenderer.selectedBGColor = new SolidColorBrush( c );
-				}
 			}
 		}
 		public MarkerType markerType
@@ -64,8 +53,6 @@ namespace Imperial_Commander_Editor
 					ol = Colors.CornflowerBlue;
 				else if ( markerType == MarkerType.Imperial )
 					ol = Colors.Red;
-				if ( mapRenderer != null )
-					mapRenderer.unselectedStrokeColor = new( ol );
 			}
 		}
 
@@ -109,22 +96,6 @@ namespace Imperial_Commander_Editor
 			return dupe;
 		}
 
-		public void BuildRenderer( Canvas canvas, Vector where, double scale )
-		{
-			Color c = Utils.ColorFromName( entityProperties.entityColor ).color;
-
-			mapRenderer = new( this, where, scale, new( 1, 1 ) )
-			{
-				selectedZ = 300,
-				selectedBGColor = new( c ),
-				unselectedBGColor = new( c ),
-				unselectedStrokeColor = new( Colors.Gray )
-			};
-			markerType = markerType;
-			mapRenderer.BuildShape( TokenShape.Circle );
-			canvas.Children.Add( mapRenderer.entityShape );
-		}
-
 		public bool Validate()
 		{
 			if ( !Utils.mainWindow.mission.EntityExists( GUID ) )
@@ -137,9 +108,5 @@ namespace Imperial_Commander_Editor
 			return true;
 		}
 
-		public void Dim( Guid guid )
-		{
-			mapRenderer.Dim( mapSectionOwner != guid );
-		}
 	}
 }

@@ -1,10 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Newtonsoft.Json;
 
 namespace Imperial_Commander_Editor
 {
@@ -40,8 +36,6 @@ namespace Imperial_Commander_Editor
 		public Expansion expansion { get { return _expansion; } set { _expansion = value; PC(); } }
 		public EntityProperties entityProperties { get; set; }
 		public Guid mapSectionOwner { get { return _mapSectionOwner; } set { _mapSectionOwner = value; PC(); } }
-		[JsonIgnore]
-		public EntityRenderer mapRenderer { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		public void PC( [CallerMemberName] string n = "" )
@@ -70,42 +64,13 @@ namespace Imperial_Commander_Editor
 			return null;
 		}
 
-		public void BuildRenderer( Canvas c, Vector where, double scale )
-		{
-			var desc = Utils.tileData
-				.Where(
-				x => x.expansion.ToLower() == expansion.ToString().ToLower()
-				&& x.id.ToString() == _tileID
-				).First();
-
-			mapRenderer = new( this, where, scale, new( desc.width, desc.height ) )
-			{
-				selectedZ = 100,
-				unselectedStrokeWidth = .25d,
-			};
-			mapRenderer.BuildShape( TokenShape.Square );
-			mapRenderer.BuildImage( $"pack://application:,,,/Imperial Commander Editor;component/Assets/Tiles/{expansion}/{expansion}_{tileID + tileSide}.jpg" );
-			c.Children.Add( mapRenderer.entityImage );
-			c.Children.Add( mapRenderer.entityShape );
-		}
-
 		public void SetSide()
 		{
-			if ( mapRenderer != null )
-			{
-				ImageSource image = new BitmapImage( new Uri( $"pack://application:,,,/Imperial Commander Editor;component/Assets/Tiles/{expansion}/{expansion}_{tileID + tileSide}.jpg" ) );
-				mapRenderer.entityImage.Source = image;
-			}
 		}
 
 		public bool Validate()
 		{
 			return true;
-		}
-
-		public void Dim( Guid guid )
-		{
-			mapRenderer.Dim( mapSectionOwner != guid );
 		}
 	}
 }

@@ -1,9 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text.Json.Serialization;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Imperial_Commander_Editor
 {
@@ -27,8 +24,6 @@ namespace Imperial_Commander_Editor
 		public EntityType entityType { get; set; }
 		public Vector entityPosition { get; set; }
 		public double entityRotation { get; set; }
-		[JsonIgnore]
-		public EntityRenderer mapRenderer { get; set; }
 		public EntityProperties entityProperties { get; set; }
 		public Guid mapSectionOwner { get { return _mapSectionOwner; } set { _mapSectionOwner = value; PC(); } }
 		public bool hasProperties { get { return true; } }
@@ -42,13 +37,6 @@ namespace Imperial_Commander_Editor
 			{
 				entityProperties.entityColor = value;
 				PC();
-				if ( mapRenderer != null )
-				{
-					Color c = Utils.ColorFromName( entityProperties.entityColor ).color;
-					mapRenderer.entityShape.Fill = new SolidColorBrush( Color.FromArgb( 100, c.R, c.G, c.B ) );
-					mapRenderer.unselectedBGColor = new SolidColorBrush( Color.FromArgb( 100, c.R, c.G, c.B ) );
-					mapRenderer.selectedBGColor = new SolidColorBrush( Color.FromArgb( 100, c.R, c.G, c.B ) );
-				}
 			}
 		}
 		public int Width { get { return _width; } set { _width = value; PC(); } }
@@ -102,44 +90,6 @@ namespace Imperial_Commander_Editor
 			return dupe;
 		}
 
-		//public void Rebuild()
-		//{
-		//	Canvas canvas = mapRenderer.entityShape.Parent as Canvas;
-		//	Vector w = mapRenderer.GetPosition();
-
-		//	mapRenderer.RemoveVisual();
-
-		//	Color c = Utils.ColorFromName( entityProperties.entityColor ).color;
-
-		//	mapRenderer = new( this, mapRenderer.where, Utils.mainWindow.mapEditor.mScale, new( Width, Height ) )
-		//	{
-		//		selectedBGColor = new SolidColorBrush( Color.FromArgb( 100, c.R, c.G, c.B ) ),
-		//		unselectedBGColor = new SolidColorBrush( Color.FromArgb( 100, c.R, c.G, c.B ) ),
-		//		unselectedStrokeColor = new( Colors.Red ),
-		//		selectedZ = 200
-		//	};
-		//	mapRenderer.BuildShape( TokenShape.Square );
-
-		//	canvas.Children.Add( mapRenderer.entityShape );
-		//	mapRenderer.Select();
-		//	mapRenderer.SetPosition( w );
-		//}
-
-		public void BuildRenderer( Canvas canvas, Vector where, double scale )
-		{
-			Color c = Utils.ColorFromName( entityProperties.entityColor ).color;
-
-			mapRenderer = new( this, where, scale, new( Width, Height ) )
-			{
-				selectedBGColor = new SolidColorBrush( Color.FromArgb( 100, c.R, c.G, c.B ) ),
-				unselectedBGColor = new SolidColorBrush( Color.FromArgb( 100, c.R, c.G, c.B ) ),
-				unselectedStrokeColor = new( Colors.Red ),
-				selectedZ = 200
-			};
-			mapRenderer.BuildShape( TokenShape.Square );
-			canvas.Children.Add( mapRenderer.entityShape );
-		}
-
 		public bool Validate()
 		{
 			if ( !Utils.mainWindow.mission.EntityExists( GUID ) )
@@ -150,11 +100,6 @@ namespace Imperial_Commander_Editor
 				return false;
 			}
 			return true;
-		}
-
-		public void Dim( Guid guid )
-		{
-			mapRenderer.Dim( mapSectionOwner != guid );
 		}
 	}
 }

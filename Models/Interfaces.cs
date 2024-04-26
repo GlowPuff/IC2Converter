@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using Newtonsoft.Json;
 
 namespace Imperial_Commander_Editor
@@ -16,14 +15,11 @@ namespace Imperial_Commander_Editor
 		bool hasProperties { get; }
 		[JsonIgnore]
 		bool hasColor { get; }
-		//[JsonIgnore]
-		//EntityRenderer mapRenderer { get; set; }
 		EntityProperties entityProperties { get; set; }
 		Guid mapSectionOwner { get; set; }
-		void BuildRenderer( Canvas c, Vector where, double scale );
+		//void BuildRenderer( Canvas c, Vector where, double scale );
 		IMapEntity Duplicate();
 		bool Validate();
-		void Dim( Guid guid );
 	}
 	public interface IEventActionDialog
 	{
